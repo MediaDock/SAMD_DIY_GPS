@@ -27,25 +27,25 @@
                 #############################                                   
                 #############################                                   
 
-  Seeeduino xiao
-
+                Based on: Seeeduino xiao
+                Built for a Workshop at MediaDock HSLU 
+                sites.hslu.ch/werkstatt/diy-gps-tracker
 */
 
 
 
 
 /* Constants / Thresholds  ***************************************************************/
-
 // For stats that happen every ... milliseconds ---> CatshDATA() refresh rate
 
 unsigned long last = 0UL;
 const unsigned long lastGPSupdate = 2000;                         // <--- Change this Value to have a refreshrate wich changes every .... millis()
 float   minDistanceVelocity = 1.8;                                // <--- Speed Threshhold if this KMH is higher then minVelocity,
 float   minGPXVelocity      = 0.8;                                // <--- Speed Threshhold if KMH is higher -> GPX trackpoint will be safed
-static const double HOME_LAT = 47.364026, HOME_LON = 8.566656;    // Klusplatz
+static const double HOME_LAT = 47.071754, HOME_LON = 8.277637;    // <--- Change this Value to set your Home Point this are the Coordinates of MediaDock
 
 unsigned long lastBME = 0UL;
-unsigned long lastBMEupdate = 2000;                                // <--- Last BME update
+unsigned long lastBMEupdate = 2000;                                // <--- Change this Value to have a refreshrate wich changes every .... millis()
 
 
 
@@ -169,11 +169,9 @@ Adafruit_BME280 bme; // I2C
 
 /* Splashscreen on Startup **************************************************************/
 /*
-
    Made with Marlin Bitmap Converter
    https://marlinfw.org/tools/u8glib/converter.html
-
-   This bitmap from the file 'spalsh2.bmp'
+   exchange this to change the splashscreen on Startup
 */
 #pragma once
 
@@ -249,10 +247,6 @@ const unsigned char SAT_bmp[] PROGMEM = {
 
 
 
-
-
-
-
 /*****************************************************************************************/
 /* Start Setup ***************************************************************************/
 /*****************************************************************************************/
@@ -314,7 +308,6 @@ void setup() {
   Serial.println(F(filename));
 
 
-
   /*BME Initialization **********************************************/
    
    Serial.println(F("BME280 test"));
@@ -343,9 +336,7 @@ void setup() {
   delay(10000);
 
 
-
-
-/* Code Version **************************************************************************/
+  /* Code Version **************************************************************************/
 
   // Clear the buffer
   display.clearDisplay();
@@ -377,59 +368,48 @@ void setup() {
 void loop() {
   // Dispatch incoming characters
   while (ss.available() > 0)
-    gps.encode(ss.read());
-
-
+  gps.encode(ss.read());
 
   button.tick();      // activate the Button
-
-
   GPSdata();        // get the GPS data
   BMEdata();        // get the BME data
 
 
   /* Menu Coordinates *************************************************************/
   if (pic == 1) {
-
     displayInfo();
   }
 
   /* Menu Coordinates *************************************************************/
   if (pic == 2) {
-
     displayCoord();
   }
 
   /* Menu Distanz    *************************************************************/
   if (pic == 3) {
-
     displayDist();
   }
 
 
   /* Menu Distanz    *************************************************************/
   if (pic == 4) {
-
     displaySatAlti();
   }
 
   /* Menu Distanz    *************************************************************/
   if (pic == 5) {
-
     displayTempHumid();
   }
   
 
   /* Menu KMH        *************************************************************/
   if (pic == 6) {
-
     displayKMH();
   }
 
 
   /* Menu Time       *************************************************************/
   if (pic == 7 && gps.time.isUpdated()) {
-
     displayTime();
   }
 
@@ -442,9 +422,7 @@ void loop() {
 /*****************************************************************************************/
 
 
-
-void GPSdata()
-{
+void GPSdata() {
 
   if (gps.location.isUpdated()) {
 
@@ -660,7 +638,6 @@ void BMEdata() {
 /*****************************************************************************************/
 /* Display Updates ***********************************************************************/
 /*****************************************************************************************/
-
 
 void displayInfo()  { 
 
